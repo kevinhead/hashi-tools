@@ -212,7 +212,6 @@ function install {
   create_consul_user "$user"
   create_consul_install_paths "$path" "$user"
   install_binaries "$version" "$path" "$user"
-  create_consul_service
 
   log_info "Consul install complete!"
 }
