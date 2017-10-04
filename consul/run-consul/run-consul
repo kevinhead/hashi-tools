@@ -24,9 +24,9 @@ function print_usage {
   echo
   echo "Optional Arguments:"
   echo
-  echo -e "  --datacenter\tConsul cluster datacenter."
-  echo -e "  --retry-join\tConsul retry join to one or more agent IPs."
-  echo -e "  --bootstrap\tConsul bootstrap node count to expect."
+  echo -e "  --datacenter\t\tConsul cluster datacenter."
+  echo -e "  --retry-join\t\tConsul retry join to one or more agent IPs."
+  echo -e "  --bootstrap\t\tConsul bootstrap node count to expect."
   echo -e "  --raft-protocol\tThis controls the internal version of the Raft consensus protocol used for server "
   echo -e "                 \tcommunications. Must be set to 3 in order to gain access to Autopilot features, with the"
   echo -e "                 \texception of cleanup_dead_servers. Default: $DEFAULT_RAFT_PROTOCOL"
@@ -131,7 +131,7 @@ function generate_consul_config {
   "bind_addr": "$instance_ip_address",
   $bootstrap_expect
   "client_addr": "0.0.0.0",
-  "datacenter": "$instance_zone",
+  "datacenter": "$cluster_datacenter",
   "node_name": "$instance_name",
   $retry_join_json
   "server": $server,
@@ -294,15 +294,16 @@ function run {
   if [[ "$skip_consul_config" == "true" ]]; then
     log_info "The --skip-consul-config flag is set, so will not generate a default Consul config file."
   else
+
     generate_consul_config \
         "$server" \
         "$raft_protocol" \
         "$config_dir" \
         "$user" \
-        get_instance_ip_address \
-        "$cluster_datacenter"
-        "$cluster_size"
-        "$cluster_retry_join"
+        "$(get_instance_ip_address)" \
+        "$cluster_datacenter" \
+        "$cluster_size" \
+        "$retry_join"
   fi
 
   generate_supervisor_config "$SUPERVISOR_CONFIG_PATH" "$config_dir" "$data_dir" "$log_dir" "$bin_dir" "$user"
