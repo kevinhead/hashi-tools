@@ -115,7 +115,7 @@ function generate_consul_config {
   if [[ -z "$cluster_retry_join" ]]; then
     log_warn "The --retry-join property is empty. Will not automatically try to form a cluster."
   else
-    retry_join_json="\"retry_join\": [\"$cluster_retry_join\"],"
+    retry_join_json="\"retry_join\": $cluster_retry_join,"
   fi
 
   local bootstrap_expect=""
