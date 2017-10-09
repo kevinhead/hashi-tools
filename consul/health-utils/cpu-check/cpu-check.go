@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	ver           = "0.0.1"
+	ver           = "0.0.2"
 	checkTemplate = `
 {
   "check": {
@@ -75,7 +75,7 @@ func main() {
 		os.Exit(-1)
 	}
 
-	u, err := cpu.Percent(1*time.Second, false)
+	u, err := cpu.Percent(500*time.Millisecond, false)
 	if err != nil {
 		log.Printf("cpu.Percent failed with - %v", err)
 		os.Exit(-1)
