@@ -136,7 +136,6 @@ function generate_consul_config {
   $retry_join_json
   "server": $server,
   "ui": true,
-  "enable_script_checks": "true",
   "raft_protocol": $raft_protocol
 }
 EOF
