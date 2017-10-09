@@ -122,8 +122,8 @@ storage "consul" {
 listener "tcp" {
   address         = "0.0.0.0:$port"
   cluster_address = "0.0.0.0:$cluster_port"
-#   tls_cert_file   = "$tls_cert_file"
-#   tls_key_file    = "$tls_key_file"
+  tls_cert_file   = "$tls_cert_file"
+  tls_key_file    = "$tls_key_file"
 }
 EOF
   chown "$user:$user" "$config_path"
@@ -233,8 +233,8 @@ function run {
     shift
   done
 
-#   assert_not_empty "--tls-cert-file" "$tls_cert_file"
-#   assert_not_empty "--tls-key-file" "$tls_key_file"
+  assert_not_empty "--tls-cert-file" "$tls_cert_file"
+  assert_not_empty "--tls-key-file" "$tls_key_file"
 
   assert_is_installed "supervisorctl"
   assert_is_installed "curl"
