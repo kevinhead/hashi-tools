@@ -12,9 +12,6 @@ readonly DEFAULT_VAULT_USER="vault"
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly SYSTEM_BIN_DIR="/usr/local/bin"
 
-readonly SUPERVISOR_DIR="/etc/supervisor"
-readonly SUPERVISOR_CONF_DIR="$SUPERVISOR_DIR/conf.d"
-
 readonly SCRIPT_NAME="$(basename "$0")"
 
 function print_usage {
@@ -67,38 +64,8 @@ function assert_not_empty {
   fi
 }
 
-# Install steps are based on: http://unix.stackexchange.com/a/291098/215969
-function install_supervisord_debian {
-  log_info "Installing supervisord on Debian/Ubuntu"
-
-  sudo apt-get install -y supervisor
-  sudo update-rc.d supervisor defaults
-
-  create_supervisor_config
-  sudo systemctl enable supervisor
-}
-
-function create_supervisor_config {
-  log_info "Creating supervisord configuration file"
-  sudo mkdir -p "$SUPERVISOR_CONF_DIR"
-  sudo cp "$SCRIPT_DIR/supervisord.conf" "$SUPERVISOR_DIR/supervisord.conf"
-}
-
 function has_apt_get {
   [[ -n "$(command -v apt-get)" ]]
-}
-
-function install_dependencies {
-  log_info "Installing dependencies"
-
-  if $(has_apt_get); then
-    sudo apt-get update -y
-    sudo apt-get install -y curl unzip jq
-    install_supervisord_debian
-  else
-    log_error "Could not find apt-get. Cannot install dependencies on this OS."
-    exit 1
-  fi
 }
 
 function user_exists {
@@ -216,7 +183,6 @@ function install {
 
   log_info "Starting Vault install"
 
-  install_dependencies
   create_vault_user "$user"
   create_vault_install_paths "$path" "$user"
   install_binaries "$version" "$path" "$user"
