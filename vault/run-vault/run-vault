@@ -110,7 +110,7 @@ function generate_vault_config {
 
   log_info "Creating default Vault config file in $config_path"
   cat > "$config_path" <<EOF
-ha_storage "consul" {
+storage "consul" {
   address = "127.0.0.1:8500"
   path    = "vault/"
   scheme  = "http"
