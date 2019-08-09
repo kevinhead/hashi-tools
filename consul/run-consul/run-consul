@@ -93,7 +93,7 @@ function assert_not_empty {
 
 # Get the IP Address
 function get_instance_ip_address {
-  ifconfig eth0 | grep "inet addr" | cut -d ':' -f 2 | cut -d ' ' -f 1
+  ifconfig ens4 | grep "inet addr" | cut -d ':' -f 2 | cut -d ' ' -f 1
 }
 
 function generate_consul_config {
